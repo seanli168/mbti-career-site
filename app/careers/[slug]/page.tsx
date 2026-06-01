@@ -1,21 +1,19 @@
 import { notFound } from "next/navigation";
 import { personalities } from "../../../data/personalities";
 
-type PageProps = {
+type Props = {
   params: Promise<{
     slug: string;
   }>;
 };
 
 export async function generateStaticParams() {
-  return personalities.map((personality) => ({
-    slug: personality.type.toLowerCase(),
+  return personalities.map((p) => ({
+    slug: p.type.toLowerCase(),
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps) {
+export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
   const personality = personalities.find(
@@ -24,7 +22,7 @@ export async function generateMetadata({
 
   if (!personality) {
     return {
-      title: "Not Found",
+      title: "Personality Not Found",
     };
   }
 
@@ -36,7 +34,7 @@ export async function generateMetadata({
 
 export default async function CareerPage({
   params,
-}: PageProps) {
+}: Props) {
   const { slug } = await params;
 
   const personality = personalities.find(
@@ -48,42 +46,44 @@ export default async function CareerPage({
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-4">
-        Best Careers for {personality.type}
-      </h1>
+    <main className="max-w-5xl mx-auto px-6 py-12">
+      <section className="text-center mb-12">
+        <h1 className="text-5xl font-bold mb-4">
+          Best Careers for {personality.type}
+        </h1>
 
-      <p className="text-lg text-gray-600 mb-8">
-        {personality.summary}
-      </p>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          {personality.summary}
+        </p>
+      </section>
 
-      <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">
+      <section className="mb-14">
+        <h2 className="text-2xl font-bold mb-6">
           Key Strengths
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {personality.strengths.map((strength) => (
+          {personality.strengths.map((item) => (
             <div
-              key={strength}
-              className="border rounded-lg p-4"
+              key={item}
+              className="bg-white border rounded-xl p-5 shadow-sm"
             >
-              {strength}
+              {item}
             </div>
           ))}
         </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">
+      <section className="mb-14">
+        <h2 className="text-2xl font-bold mb-6">
           Recommended Careers
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {personality.careers.map((career) => (
             <div
               key={career.title}
-              className="border rounded-lg p-6"
+              className="bg-white border rounded-xl p-6 shadow-sm"
             >
               <h3 className="text-xl font-semibold mb-2">
                 {career.title}
@@ -99,3 +99,4 @@ export default async function CareerPage({
     </main>
   );
 }
+
