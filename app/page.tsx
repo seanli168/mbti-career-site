@@ -167,9 +167,31 @@ export default function HomePage() {
               careers that fit your strengths and work style.
             </p>
           </div>
+              
 
         </div>
       </section>
+  <section className="max-w-6xl mx-auto px-6 py-16">
+  <h2 className="text-3xl font-bold mb-8">
+    Popular Career Guides
+  </h2>
+
+  <div className="grid md:grid-cols-3 gap-4">
+
+    <Link href="/guides/best-jobs-for-intj">
+      Best Jobs for INTJ
+    </Link>
+
+    <Link href="/guides/high-paying-jobs-for-intp">
+      High Paying Jobs for INTP
+    </Link>
+
+    <Link href="/guides/remote-jobs-for-enfp">
+      Remote Jobs for ENFP
+    </Link>
+
+  </div>
+</section>
 
     </main>
   );
