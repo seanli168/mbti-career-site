@@ -42,6 +42,10 @@ export default function HomePage() {
           Take Free MBTI Test
         </Link>
       </section>
+      <div className="mt-6 text-gray-500 text-sm">
+  Trusted by thousands of users exploring
+  career paths and personality insights.
+</div>
 
       {/* 16 PERSONALITIES */}
       <section className="max-w-6xl mx-auto px-6 py-16">
@@ -87,6 +91,53 @@ export default function HomePage() {
           motivations, and work preferences.
         </p>
       </section>
+      <section className="max-w-6xl mx-auto px-6 py-16">
+
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+    <div className="border rounded-xl p-6 text-center">
+      <div className="text-3xl font-bold">
+        16
+      </div>
+
+      <div className="text-gray-500">
+        Personality Types
+      </div>
+    </div>
+
+    <div className="border rounded-xl p-6 text-center">
+      <div className="text-3xl font-bold">
+        100+
+      </div>
+
+      <div className="text-gray-500">
+        Career Guides
+      </div>
+    </div>
+
+    <div className="border rounded-xl p-6 text-center">
+      <div className="text-3xl font-bold">
+        120+
+      </div>
+
+      <div className="text-gray-500">
+        Type Comparisons
+      </div>
+    </div>
+
+    <div className="border rounded-xl p-6 text-center">
+      <div className="text-3xl font-bold">
+        Free
+      </div>
+
+      <div className="text-gray-500">
+        Career Assessment
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
       {/* BENEFITS */}
       <section className="max-w-5xl mx-auto px-6 py-16">
