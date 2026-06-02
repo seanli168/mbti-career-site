@@ -41,11 +41,12 @@ export default function HomePage() {
         >
           Take Free MBTI Test
         </Link>
-      </section>
-      <div className="mt-6 text-gray-500 text-sm">
+              <div className="mt-6 text-gray-500 text-sm">
   Trusted by thousands of users exploring
   career paths and personality insights.
 </div>
+      </section>
+
 
       {/* 16 PERSONALITIES */}
       <section className="max-w-6xl mx-auto px-6 py-16">
