@@ -6,7 +6,6 @@ export default function robots() {
         allow: "/",
       },
     ],
-
-    sitemap: "https://your-domain.com/sitemap.xml",
+    sitemap: "https://mbti-career-site.vercel.app/sitemap.xml",
   };
 }
