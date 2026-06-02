@@ -192,6 +192,21 @@ export default function HomePage() {
 
   </div>
 </section>
+<footer className="border-t mt-20">
+  <div className="max-w-6xl mx-auto px-6 py-8 flex gap-6">
+    <Link href="/privacy">
+      Privacy Policy
+    </Link>
+
+    <Link href="/disclaimer">
+      Disclaimer
+    </Link>
+
+    <Link href="/test">
+      MBTI Test
+    </Link>
+  </div>
+</footer>
 
     </main>
   );
