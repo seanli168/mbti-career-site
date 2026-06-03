@@ -1,136 +1,104 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-
 import { guides } from "@/data/guides";
 import { getGuideContent } from "@/data/guides-content";
+import Link from "next/link";
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+type Props = { params: { slug: string } };
 
+// 静态生成所有 guide 页面
 export async function generateStaticParams() {
-  return guides.map((slug) => ({
-    slug,
-  }));
+  return guides.map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
-  const exists = guides.includes(params.slug);
-
-  if (!exists) {
-    return {};
-  }
+// 自动生成 SEO Metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (!guides.includes(params.slug)) return {};
 
   const guide = getGuideContent(params.slug);
 
   return {
     title: guide.title,
-    description: `${guide.title} - Complete career guide, personality insights, salary expectations, strengths, weaknesses and job recommendations.`,
+    description: `${guide.title} - Full MBTI career guide, strengths, weaknesses, and recommended jobs.`,
+    openGraph: {
+      title: guide.title,
+      description: `${guide.title} - Full MBTI career guide.`,
+      type: "article",
+    },
   };
 }
 
-export default function GuidePage({
-  params,
-}: Props) {
-  const exists = guides.includes(params.slug);
+// FAQ Schema
+function FAQSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this career path suitable for me?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on your personality type, skills, and interests."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How accurate is MBTI for career guidance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MBTI provides a general framework to understand personality preferences and related career paths."
+        }
+      }
+    ]
+  };
 
-  if (!exists) {
-    notFound();
-  }
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
+export default function GuidePage({ params }: Props) {
+  if (!guides.includes(params.slug)) notFound();
 
   const guide = getGuideContent(params.slug);
+
+  // 自动生成相关文章内链
+  const relatedGuides = guides
+    .filter(s => s !== params.slug)
+    .slice(0, 6);
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
 
-      <article>
+      <FAQSchema />
 
-        <h1 className="text-5xl font-bold mb-6">
-          {guide.title}
-        </h1>
+      <article>
+        <h1 className="text-5xl font-bold mb-6">{guide.title}</h1>
 
         <p className="text-lg text-gray-600 mb-10">
-          Complete guide to {guide.title.toLowerCase()}.
+          Comprehensive guide to {guide.title.toLowerCase()}. Explore recommended jobs, strengths, weaknesses, and career tips for this MBTI type.
         </p>
 
+        {/* 内容示例段落 */}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <section key={i} className="mb-10">
+            <h2 className="text-3xl font-bold mb-4">Section {i + 1}</h2>
+            <p className="text-gray-700 leading-8">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+              Curabitur pretium tincidunt lacus, sed venenatis arcu sagittis non.
+            </p>
+          </section>
+        ))}
+
+        {/* 内部推荐相关文章 */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Overview
-          </h2>
-
-          <p className="text-gray-700 leading-8">
-            Understanding personality traits can help people choose
-            careers that align with their strengths, interests,
-            communication style and long-term goals.
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Best Career Options
-          </h2>
-
-          <p className="text-gray-700 leading-8">
-            Popular career choices often include technology,
-            business, healthcare, education and creative industries.
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Salary Expectations
-          </h2>
-
-          <p className="text-gray-700 leading-8">
-            Salaries vary based on experience, education,
-            location and industry demand.
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Work Environment
-          </h2>
-
-          <p className="text-gray-700 leading-8">
-            Finding the right workplace environment is often
-            as important as selecting the right career.
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-5">
-
-            <div>
-              <h3 className="font-semibold">
-                Is this career path a good choice?
-              </h3>
-
-              <p className="text-gray-600">
-                It depends on your interests,
-                skills and personality preferences.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold">
-                Can personality affect career success?
-              </h3>
-
-              <p className="text-gray-600">
-                Personality can influence work preferences,
-                communication styles and job satisfaction.
-              </p>
-            </div>
-
+          <h2 className="text-3xl font-bold mb-4">Related Articles</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {relatedGuides.map(slug => (
+              <Link key={slug} href={`/guides/${slug}`} className="text-blue-600 hover:underline">
+                {getGuideContent(slug).title}
+              </Link>
+            ))}
           </div>
         </section>
 
