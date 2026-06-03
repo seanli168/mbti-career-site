@@ -1,11 +1,13 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { personalities } from "../../../data/personalities";
-import { guides } from "../../../data/guides";
+
+import { guides } from "@/data/guides";
+import { getGuideContent } from "@/data/guides-content";
 
 type Props = {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 };
 
 export async function generateStaticParams() {
@@ -16,81 +18,123 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: Props) {
-  const { slug } = await params;
+}: Props): Promise<Metadata> {
+  const exists = guides.includes(params.slug);
+
+  if (!exists) {
+    return {};
+  }
+
+  const guide = getGuideContent(params.slug);
 
   return {
-    title: slug.replace(/-/g, " "),
-    description: `Career guide for ${slug}`,
+    title: guide.title,
+    description: `${guide.title} - Complete career guide, personality insights, salary expectations, strengths, weaknesses and job recommendations.`,
   };
 }
 
-export default async function GuidePage({
+export default function GuidePage({
   params,
 }: Props) {
-  const { slug } = await params;
+  const exists = guides.includes(params.slug);
 
-  const personality = personalities.find((p) =>
-    slug.includes(p.type.toLowerCase())
-  );
-
-  if (!personality) {
+  if (!exists) {
     notFound();
   }
+
+  const guide = getGuideContent(params.slug);
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
 
-      <h1 className="text-5xl font-bold mb-6 capitalize">
-        {slug.replace(/-/g, " ")}
-      </h1>
+      <article>
 
-      <p className="text-lg text-gray-600 mb-10">
-        {personality.summary}
-      </p>
+        <h1 className="text-5xl font-bold mb-6">
+          {guide.title}
+        </h1>
 
-      <section className="mb-10">
-        <h2 className="text-3xl font-bold mb-4">
-          Best Careers
-        </h2>
+        <p className="text-lg text-gray-600 mb-10">
+          Complete guide to {guide.title.toLowerCase()}.
+        </p>
 
-        <div className="space-y-4">
-          {personality.careers.map((career) => (
-            <div
-              key={career.title}
-              className="border rounded-xl p-5"
-            >
-              <h3 className="font-semibold text-xl">
-                {career.title}
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Overview
+          </h2>
+
+          <p className="text-gray-700 leading-8">
+            Understanding personality traits can help people choose
+            careers that align with their strengths, interests,
+            communication style and long-term goals.
+          </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Best Career Options
+          </h2>
+
+          <p className="text-gray-700 leading-8">
+            Popular career choices often include technology,
+            business, healthcare, education and creative industries.
+          </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Salary Expectations
+          </h2>
+
+          <p className="text-gray-700 leading-8">
+            Salaries vary based on experience, education,
+            location and industry demand.
+          </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Work Environment
+          </h2>
+
+          <p className="text-gray-700 leading-8">
+            Finding the right workplace environment is often
+            as important as selecting the right career.
+          </p>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4">
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-5">
+
+            <div>
+              <h3 className="font-semibold">
+                Is this career path a good choice?
               </h3>
 
               <p className="text-gray-600">
-                {career.description}
+                It depends on your interests,
+                skills and personality preferences.
               </p>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="mb-10">
-        <h2 className="text-3xl font-bold mb-4">
-          Strengths
-        </h2>
+            <div>
+              <h3 className="font-semibold">
+                Can personality affect career success?
+              </h3>
 
-        <ul className="list-disc ml-6">
-          {personality.strengths.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
+              <p className="text-gray-600">
+                Personality can influence work preferences,
+                communication styles and job satisfaction.
+              </p>
+            </div>
 
-      <section>
-        <h2 className="text-3xl font-bold mb-4">
-          Work Style
-        </h2>
+          </div>
+        </section>
 
-        <p>{personality.workStyle}</p>
-      </section>
+      </article>
 
     </main>
   );

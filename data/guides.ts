@@ -47,4 +47,22 @@ export const guides = [
   "remote-jobs-for-esfj",
   "remote-jobs-for-estp",
   "remote-jobs-for-esfp",
+
+  "best-careers-for-intj",
+"best-careers-for-intp",
+
+"worst-careers-for-intj",
+"worst-careers-for-intp",
+
+"best-majors-for-intj",
+"best-majors-for-intp",
+
+"intj-career-change",
+"intp-career-change",
+
+"intj-leadership-style",
+"intp-leadership-style",
+
+"intj-work-environment",
+"intp-work-environment",
 ];

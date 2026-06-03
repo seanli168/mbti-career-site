@@ -231,17 +231,28 @@ export default function HomePage() {
   <div className="grid md:grid-cols-3 gap-4">
 
     <Link href="/guides/best-jobs-for-intj">
-      Best Jobs for INTJ
-    </Link>
+  Best Jobs for INTJ
+</Link>
 
-    <Link href="/guides/high-paying-jobs-for-intp">
-      High Paying Jobs for INTP
-    </Link>
+<Link href="/guides/high-paying-jobs-for-intj">
+  High Paying Jobs for INTJ
+</Link>
 
-    <Link href="/guides/remote-jobs-for-enfp">
-      Remote Jobs for ENFP
-    </Link>
+<Link href="/guides/remote-jobs-for-intj">
+  Remote Jobs for INTJ
+</Link>
 
+<Link href="/guides/best-jobs-for-enfp">
+  Best Jobs for ENFP
+</Link>
+
+<Link href="/guides/remote-jobs-for-entp">
+  Remote Jobs for ENTP
+</Link>
+
+<Link href="/guides/high-paying-jobs-for-infp">
+  High Paying Jobs for INFP
+</Link>
   </div>
 </section>
 <footer className="border-t mt-20">
