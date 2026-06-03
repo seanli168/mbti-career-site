@@ -1,40 +1,47 @@
 import { MetadataRoute } from "next";
-import { personalities } from "../data/personalities";
-import { guides } from "../data/guides";
+import { personalities } from "@/data/personalities";
+import { guides } from "@/data/guides";
+import { compareList } from "@/data/compare";
+
+const SITE_URL = "https://your-domain.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://your-domain.com"; // ← 后面换成你真实域名
+  const now = new Date();
 
-  const staticPages: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/test`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
+  // 1. 静态页面
+  const staticRoutes = [
+    "",
+    "/test",
+    "/careers",
+    "/guides",
+    "/compare",
+  ].map((route) => ({
+    url: `${SITE_URL}${route}`,
+    lastModified: now,
+  }));
+
+  // 2. Careers 页面（16个人格）
+  const careerRoutes = personalities.map((p) => ({
+    url: `${SITE_URL}/careers/${p.type.toLowerCase()}`,
+    lastModified: now,
+  }));
+
+  // 3. Guides 页面（100+ SEO pages）
+  const guideRoutes = guides.map((slug) => ({
+    url: `${SITE_URL}/guides/${slug}`,
+    lastModified: now,
+  }));
+
+  // 4. Compare 页面（120+组合）
+  const compareRoutes = compareList.map((item) => ({
+    url: `${SITE_URL}/compare/${item.slug}`,
+    lastModified: now,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...careerRoutes,
+    ...guideRoutes,
+    ...compareRoutes,
   ];
-
-  // 1️⃣ careers 页面
-  const careerPages: MetadataRoute.Sitemap = personalities.map((p) => ({
-    url: `${baseUrl}/careers/${p.type.toLowerCase()}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
-  // 2️⃣ guides 页面（SEO核心流量）
-  const guidePages: MetadataRoute.Sitemap = guides.map((slug) => ({
-    url: `${baseUrl}/guides/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
-
-  return [...staticPages, ...careerPages, ...guidePages];
 }
